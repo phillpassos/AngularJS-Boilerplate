@@ -39,11 +39,7 @@
     "build": "gulp build",
     "server": "gulp server",
     "serverbuild": "gulp server-build",
-    "postinstall": "npm install gulp-sass gulp-imagemin --save&&bower install --no-interactive"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/jbutko/AngularJS-Boilerplate.git"
+    "postinstall": "npm install gulp-sass gulp-imagemin --save && npm i -g bower && bower install --no-interactive"
   },
   "keywords": [
     "angular",
@@ -54,14 +50,8 @@
     "single-page",
     "spa"
   ],
-  "author": "Jozef Butko",
-  "docs": "https://github.com/jbutko/AngularJS-Boilerplate/blob/master/README.md",
-  "bugs": {
-    "url": "https://github.com/jbutko/AngularJS-Boilerplate/issues"
-  },
-  "homepage": "https://github.com/jbutko/AngularJS-Boilerplate",
   "dependencies": {
-    "gulp-imagemin": "^3.2.0",
-    "gulp-sass": "^3.1.0"
+    "gulp-imagemin": "^3.4.0",
+    "gulp-sass": "^3.2.1"
   }
 }

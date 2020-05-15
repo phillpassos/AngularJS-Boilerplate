@@ -1,22 +1,3 @@
-/**
- * @author  Jozef Butko
- * @url		  www.jozefbutko.com/resume
- * @date    March 2015
- * @license MIT
- *
- * AngularJS Boilerplate: Build, watch and other useful tasks
- *
- * The build process consists of following steps:
- * 1. clean /_build folder
- * 2. compile SASS files, minify and uncss compiled css
- * 3. copy and minimize images
- * 4. minify and copy all HTML files into $templateCache
- * 5. build index.html
- * 6. minify and copy all JS files
- * 7. copy fonts
- * 8. show build folder size
- * 
- */
 var gulp            = require('gulp'),
     browserSync     = require('browser-sync'),
     reload          = browserSync.reload,
@@ -25,7 +6,6 @@ var gulp            = require('gulp'),
     runSequence     = require('run-sequence');
 
 
-// optimize images
 gulp.task('images', function() {
   return gulp.src('./images/**/*')
     .pipe($.changed('./_build/images'))
@@ -37,7 +17,6 @@ gulp.task('images', function() {
     .pipe(gulp.dest('./_build/images'));
 });
 
-// browser-sync task, only cares about compiled CSS
 gulp.task('browser-sync', function() {
   browserSync({
     server: {
@@ -46,14 +25,12 @@ gulp.task('browser-sync', function() {
   });
 });
 
-// minify JS
 gulp.task('minify-js', function() {
   gulp.src('js/*.js')
     .pipe($.uglify())
     .pipe(gulp.dest('./_build/'));
 });
 
-// minify CSS
 gulp.task('minify-css', function() {
   gulp.src(['./styles/**/*.css', '!./styles/**/*.min.css'])
     .pipe($.rename({suffix: '.min'}))
@@ -62,7 +39,6 @@ gulp.task('minify-css', function() {
     .pipe(gulp.dest('./_build/css/'));
 });
 
-// minify HTML
 gulp.task('minify-html', function() {
   var opts = {
     comments: true,
@@ -75,14 +51,12 @@ gulp.task('minify-html', function() {
     .pipe(gulp.dest('./_build/'));
 });
 
-// copy fonts from a module outside of our project (like Bower)
 gulp.task('fonts', function() {
   gulp.src('./fonts/**/*.{ttf,woff,eof,eot,svg}')
     .pipe($.changed('./_build/fonts'))
     .pipe(gulp.dest('./_build/fonts'));
 });
 
-// start webserver
 gulp.task('server', function(done) {
   return browserSync({
     server: {
@@ -91,7 +65,6 @@ gulp.task('server', function(done) {
   }, done);
 });
 
-// start webserver from _build folder to check how it will look in production
 gulp.task('server-build', function(done) {
   return browserSync({
     server: {
@@ -100,24 +73,18 @@ gulp.task('server-build', function(done) {
   }, done);
 });
 
-// delete build folder
 gulp.task('clean:build', function (cb) {
   del([
     './_build/'
-    // if we don't want to clean any file we can use negate pattern
-    //'!dist/mobile/deploy.json'
   ], cb);
 });
 
-// concat files
 gulp.task('concat', function() {
   gulp.src('./js/*.js')
     .pipe($.concat('scripts.js'))
     .pipe(gulp.dest('./_build/'));
 });
 
-// SASS task, will run when any SCSS files change & BrowserSync
-// will auto-update browsers
 gulp.task('sass', function() {
   return gulp.src('styles/style.scss')
     .pipe($.sourcemaps.init())
@@ -138,7 +105,6 @@ gulp.task('sass', function() {
     }));
 });
 
-// SASS Build task
 gulp.task('sass:build', function() {
   var s = $.size();
 
@@ -173,14 +139,10 @@ gulp.task('sass:build', function() {
     }));
 });
 
-// BUGFIX: warning: possible EventEmitter memory leak detected. 11 listeners added.
 require('events').EventEmitter.prototype._maxListeners = 100;
 
-// index.html build
-// script/css concatenation
 gulp.task('usemin', function() {
   return gulp.src('./index.html')
-    // add templates path
     .pipe($.htmlReplace({
       'templates': '<script type="text/javascript" src="js/templates.js"></script>'
     }))
@@ -195,7 +157,6 @@ gulp.task('usemin', function() {
     .pipe(gulp.dest('./_build/'));
 });
 
-// make templateCache from all HTML files
 gulp.task('templates', function() {
   return gulp.src([
       './**/*.html',
@@ -210,12 +171,10 @@ gulp.task('templates', function() {
     .pipe(gulp.dest('_build/js'));
 });
 
-// reload all Browsers
 gulp.task('bs-reload', function() {
   browserSync.reload();
 });
 
-// calculate build folder size
 gulp.task('build:size', function() {
   var s = $.size();
 
@@ -229,10 +188,6 @@ gulp.task('build:size', function() {
     }));
 });
 
-
-// default task to be run with `gulp` command
-// this default task will run BrowserSync & then use Gulp to watch files.
-// when a file is changed, an event is emitted to BrowserSync with the filepath.
 gulp.task('default', ['browser-sync', 'sass', 'minify-css'], function() {
   gulp.watch('styles/*.css', function(file) {
     if (file.type === "changed") {
@@ -244,19 +199,6 @@ gulp.task('default', ['browser-sync', 'sass', 'minify-css'], function() {
   gulp.watch('styles/**/*.scss', ['sass', 'minify-css']);
 });
 
-
-/**
- * build task:
- * 1. clean /_build folder
- * 2. compile SASS files, minify and uncss compiled css
- * 3. copy and minimize images
- * 4. minify and copy all HTML files into $templateCache
- * 5. build index.html
- * 6. minify and copy all JS files
- * 7. copy fonts
- * 8. show build folder size
- * 
- */
 gulp.task('build', function(callback) {
   runSequence(
     'clean:build',
